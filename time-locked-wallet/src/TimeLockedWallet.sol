@@ -38,7 +38,7 @@ contract TimeLockedWallet {
         payable(owner).transfer(balance);
     }
 
-    /// Helper function
+    /// Timeleft
     function timeLeft() external view returns (uint256) {
         if (block.timestamp >= unlockTime) {
             return 0;
