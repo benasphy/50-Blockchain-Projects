@@ -26,7 +26,6 @@ contract Lottery {
 
     /// PICK WINNER (manager only)
     function pickWinner() external onlyManager{
-        require(msg.sender == manager, "Only manager");
         require(players.length > 0, "No players");
 
         uint256 randomIndex = _random() % players.length;
