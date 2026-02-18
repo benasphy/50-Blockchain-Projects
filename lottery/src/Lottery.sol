@@ -8,6 +8,10 @@ contract Lottery {
     event Entered(address indexed player);
     event WinnerPicked(address indexed winner, uint256 amount);
 
+    modifier onlyManager(){
+        require(msg.sender == manager, "Not manager");
+        _;
+    }
     constructor() {
         manager = msg.sender;
     }
