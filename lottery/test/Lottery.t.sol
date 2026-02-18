@@ -7,7 +7,7 @@ import "../src/Lottery.sol";
 contract LotteryTest is Test {
     Lottery lottery;
 
-    address player1 = address(1);
+    address player1 = address(0x1);
     address player2 = address(2);
     address player3 = address(3);
 
