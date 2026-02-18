@@ -8,7 +8,7 @@ contract LotteryTest is Test {
     Lottery lottery;
 
     address player1 = address(0x1);
-    address player2 = address(2);
+    address player2 = address(0x2);
     address player3 = address(3);
 
     function setUp() public {
