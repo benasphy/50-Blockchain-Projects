@@ -2,9 +2,6 @@
 pragma solidity ^0.8.20;
 
 contract MyERC20 {
-    // --------------------------------
-    // METADATA
-    // --------------------------------
 
     string public name;
     string public symbol;
