@@ -1,70 +1,103 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-contract StakeToken {
-    string public name = "StakeToken";
-    string public symbol = "STK";
-    uint8 public immutable decimals = 18;
+import "./StakeToken.sol";
 
-    uint256 public totalSupply;
+contract Staking {
+    StakeToken public token;
 
-    mapping(address => uint256) private balances;
-    mapping(address => mapping(address => uint256)) private allowances;
+    uint256 public rewardRate = 1e18; // 1 token per second
+    uint256 public lastUpdateTime;
+    uint256 public rewardPerTokenStored;
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    uint256 public totalStaked;
 
-    constructor(uint256 initialSupply) {
-        _mint(msg.sender, initialSupply);
+    mapping(address => uint256) public userStake;
+    mapping(address => uint256) public userRewardPerTokenPaid;
+    mapping(address => uint256) public rewards;
+
+    event Staked(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
+    event RewardPaid(address indexed user, uint256 reward);
+
+    constructor(address _token) {
+        token = StakeToken(_token);
     }
 
-    function balanceOf(address account) external view returns (uint256) {
-        return balances[account];
+    // -----------------------------
+    // CORE REWARD LOGIC
+    // -----------------------------
+
+    function rewardPerToken() public view returns (uint256) {
+        if (totalStaked == 0) {
+            return rewardPerTokenStored;
+        }
+
+        return
+            rewardPerTokenStored +
+            ((block.timestamp - lastUpdateTime) * rewardRate * 1e18) /
+            totalStaked;
     }
 
-    function transfer(address to, uint256 amount) external returns (bool) {
-        _transfer(msg.sender, to, amount);
-        return true;
+    function earned(address account) public view returns (uint256) {
+        return
+            (userStake[account] *
+                (rewardPerToken() - userRewardPerTokenPaid[account])) /
+            1e18 +
+            rewards[account];
     }
 
-    function approve(address spender, uint256 amount) external returns (bool) {
-        allowances[msg.sender][spender] = amount;
-        emit Approval(msg.sender, spender, amount);
-        return true;
+    function updateReward(address account) internal {
+        rewardPerTokenStored = rewardPerToken();
+        lastUpdateTime = block.timestamp;
+
+        if (account != address(0)) {
+            rewards[account] = earned(account);
+            userRewardPerTokenPaid[account] = rewardPerTokenStored;
+        }
     }
 
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256)
-    {
-        return allowances[owner][spender];
+    // -----------------------------
+    // USER FUNCTIONS
+    // -----------------------------
+
+    function stake(uint256 amount) external {
+        require(amount > 0, "Cannot stake 0");
+
+        updateReward(msg.sender);
+
+        totalStaked += amount;
+        userStake[msg.sender] += amount;
+
+        token.transferFrom(msg.sender, address(this), amount);
+
+        emit Staked(msg.sender, amount);
     }
 
-    function transferFrom(address from, address to, uint256 amount)
-        external
-        returns (bool)
-    {
-        uint256 allowed = allowances[from][msg.sender];
-        require(allowed >= amount, "Not allowed");
+    function withdraw(uint256 amount) external {
+        require(amount > 0, "Cannot withdraw 0");
+        require(userStake[msg.sender] >= amount, "Not enough stake");
 
-        allowances[from][msg.sender] = allowed - amount;
-        _transfer(from, to, amount);
-        return true;
+        updateReward(msg.sender);
+
+        totalStaked -= amount;
+        userStake[msg.sender] -= amount;
+
+        token.transfer(msg.sender, amount);
+
+        emit Withdrawn(msg.sender, amount);
     }
 
-    function _transfer(address from, address to, uint256 amount) internal {
-        require(balances[from] >= amount, "Insufficient");
+    function claimReward() external {
+        updateReward(msg.sender);
 
-        balances[from] -= amount;
-        balances[to] += amount;
+        uint256 reward = rewards[msg.sender];
+        require(reward > 0, "No reward");
 
-        emit Transfer(from, to, amount);
-    }
+        rewards[msg.sender] = 0;
 
-    function _mint(address to, uint256 amount) internal {
-        totalSupply += amount;
-        balances[to] += amount;
-        emit Transfer(address(0), to, amount);
+        token.transfer(msg.sender, reward);
+
+        emit RewardPaid(msg.sender, reward);
     }
 }
