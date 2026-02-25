@@ -18,4 +18,14 @@ contract GovToken {
         emit Transfer(address(0), msg.sender, _supply);
     }
 
+    function transfer(address to, uint256 amount) external returns (bool) {
+        require(balanceOf[msg.sender] >= amount, "Insufficient");
+
+        balanceOf[msg.sender] -= amount;
+        balanceOf[to] += amount;
+
+        emit Transfer(msg.sender, to, amount);
+        return true;
+    }
+
 }
