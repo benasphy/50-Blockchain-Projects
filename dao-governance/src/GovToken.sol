@@ -1,14 +1,21 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-contract Counter {
-    uint256 public number;
+contract GovToken {
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
+    string public name = "GovernanceToken";
+    string public symbol = "GOV";
+    uint8 public decimals = 18;
+    uint256 public totalSupply;
+
+    mapping(address => uint256) public balanceOf;
+
+    event Transfer(address indexed from, address indexed to, uint256 amount);
+
+    constructor(uint256 _supply) {
+        totalSupply = _supply;
+        balanceOf[msg.sender] = _supply;
+        emit Transfer(address(0), msg.sender, _supply);
     }
 
-    function increment() public {
-        number++;
-    }
 }
