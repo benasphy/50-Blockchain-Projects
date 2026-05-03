@@ -520,9 +520,7 @@ contract AMMTest is Test {
         assertApproxEqAbs(withdrawB, addB, 1);
     }
 
-    // ─────────────────────────────────────────────
     // Existing smoke tests (kept for backwards-compat)
-    // ─────────────────────────────────────────────
 
     function testAddLiquidity() public {
         vm.prank(user);
