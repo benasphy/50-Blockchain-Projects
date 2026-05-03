@@ -243,9 +243,9 @@ contract AMMTest is Test {
         assertEq(amm.shares(user), userShares - userShares / 2);
     }
 
-    // ─────────────────────────────────────────────
+    
     // swapAforB tests
-    // ─────────────────────────────────────────────
+    
 
     function testSwapAforB_outputMatchesFormula() public {
         seedLiquidity(1000 ether, 1000 ether);
