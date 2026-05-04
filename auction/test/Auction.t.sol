@@ -101,6 +101,17 @@ contract AuctionTest is Test {
         assertEq(auction.pendingReturns(bidder1), 0);
     }
 
+    function testEndAuctionRevertsIfCalledTwice() public {
+        vm.prank(bidder1);
+        auction.bid{value: 1 ether}();
+
+        vm.warp(block.timestamp + 61);
+        auction.endAuction();
+
+        vm.expectRevert("Auction already ended");
+        auction.endAuction();
+    }
+
     function testEndAuction() public {
         vm.prank(bidder1);
         auction.bid{value: 1 ether}();
@@ -111,4 +122,5 @@ contract AuctionTest is Test {
 
         assertTrue(auction.ended());
     }
+
 }
