@@ -33,6 +33,13 @@ contract AuctionTest is Test {
             vm.expectRevert("Bid too low");
             auction.bid{value: 1 ether}(); // not strictly greater
         }
+    function testBidAfterEndReverts() public {
+        vm.warp(block.timestamp + 61);
+
+        vm.prank(bidder1);
+        vm.expectRevert("Auction ended");
+        auction.bid{value: 1 ether}();
+    }
 
     function testOutbidRefund() public {
         vm.prank(bidder1);
