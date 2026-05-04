@@ -25,6 +25,15 @@ contract AuctionTest is Test {
         assertEq(auction.highestBidder(), bidder1);
     }
 
+    function testBidTooLowReverts() public {
+            vm.prank(bidder1);
+            auction.bid{value: 1 ether}();
+    
+            vm.prank(bidder2);
+            vm.expectRevert("Bid too low");
+            auction.bid{value: 1 ether}(); // not strictly greater
+        }
+
     function testOutbidRefund() public {
         vm.prank(bidder1);
         auction.bid{value: 1 ether}();
