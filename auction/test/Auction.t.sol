@@ -67,7 +67,25 @@ contract AuctionTest is Test {
     
             assertEq(auction.pendingReturns(bidder2), 2 ether);
         }
+    function testEndAuctionTransfersToSellerAndEmits() public {
+        vm.prank(bidder1);
+        auction.bid{value: 1 ether}();
 
+        vm.prank(bidder2);
+        auction.bid{value: 2 ether}();
+
+        vm.warp(block.timestamp + 61);
+
+        uint256 sellerBefore = seller.balance;
+
+        vm.expectEmit(true, true, false, true);
+        emit Auction.AuctionEnded(bidder2, 2 ether);
+
+        auction.endAuction();
+
+        assertTrue(auction.ended());
+        assertEq(seller.balance, sellerBefore + 2 ether);
+    }
 
     function testWithdraw() public {
         vm.prank(bidder1);
