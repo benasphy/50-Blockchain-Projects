@@ -51,6 +51,24 @@ contract AuctionTest is Test {
         assertEq(auction.pendingReturns(bidder1), 1 ether);
     }
 
+    function testOutbidRefundAccumulates() public {
+            vm.prank(bidder1);
+            auction.bid{value: 1 ether}();
+    
+            vm.prank(bidder2);
+            auction.bid{value: 2 ether}();
+    
+            // bidder1 is owed 1 ether
+            assertEq(auction.pendingReturns(bidder1), 1 ether);
+    
+            // bidder1 becomes highest again, bidder2 gets pending return too
+            vm.prank(bidder1);
+            auction.bid{value: 3 ether}();
+    
+            assertEq(auction.pendingReturns(bidder2), 2 ether);
+        }
+
+
     function testWithdraw() public {
         vm.prank(bidder1);
         auction.bid{value: 1 ether}();
