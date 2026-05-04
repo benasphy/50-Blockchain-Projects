@@ -67,6 +67,7 @@ contract AuctionTest is Test {
     
             assertEq(auction.pendingReturns(bidder2), 2 ether);
         }
+
     function testEndAuctionTransfersToSellerAndEmits() public {
         vm.prank(bidder1);
         auction.bid{value: 1 ether}();
