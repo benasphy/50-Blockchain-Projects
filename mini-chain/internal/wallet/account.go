@@ -1,0 +1,5 @@
+type Account struct {
+    Address string
+    Balance uint64
+    Nonce   uint64
+}
