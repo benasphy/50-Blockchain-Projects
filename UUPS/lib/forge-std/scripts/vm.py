@@ -1,37 +1,5 @@
 
-
- "VmSafe")
-    out += pp.finish()
-
-    # Compatibility with <0.8.0
-    def memory_to_calldata(m: re.Match) -> str:
-        return " calldata " + m.group(1)
-
-    out = re.sub(r" memory (.*returns)", memory_to_calldata, out)
-
-    with open(OUT_PATH, "w") as f:
-        f.write(out)
-
-    forge_fmt = ["forge", "fmt", OUT_PATH]
-    res = subprocess.run(forge_fmt)
-    assert res.returncode == 0, f"command failed: {forge_fmt}"
-
-    print(f"Wrote to {OUT_PATH}")
-
-
-class CmpCheatcode:
-    cheatcode: "Cheatcode"
-
-    def __init__(self, cheatcode: "Cheatcode"):
-        self.cheatcode = cheatcode
-
-    def __lt__(self, other: "CmpCheatcode") -> bool:
-        return cmp_cheatcode(self.cheatcode, other.cheatcode) < 0
-
-    def __eq__(self, other: "CmpCheatcode") -> bool:
-        return cmp_cheatcode(self.cheatcode, other.cheatcode) == 0
-
-    def __gt__(self, other: "CmpCheatcode") -> bool:
+pCheatcode") -> bool:
         return cmp_cheatcode(self.cheatcode, other.cheatcode) > 0
 
 
