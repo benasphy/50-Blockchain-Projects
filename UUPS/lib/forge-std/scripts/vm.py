@@ -1,32 +1,6 @@
 
 
-    name: str
-    description: str
-    declaration: str
-
-    def __init__(self, name: str, description: str, declaration: str):
-        self.name = name
-        self.description = description
-        self.declaration = declaration
-
-    @staticmethod
-    def from_dict(d: dict) -> "Event":
-        return Event(**d)
-
-
-class EnumVariant:
-    name: str
-    description: str
-
-    def __init__(self, name: str, description: str):
-        self.name = name
-        self.description = description
-
-
-class Enum:
-    name: str
-    description: str
-    variants: list[EnumVariant]
+  
 
     def __init__(self, name: str, description: str, variants: list[EnumVariant]):
         self.name = name
