@@ -1,46 +1,6 @@
 
 
-    if s == "json":
-        return "JSON"
-    return s[0].upper() + s[1:]
-
-
-class Visibility(PyEnum):
-    EXTERNAL: str = "external"
-    PUBLIC: str = "public"
-    INTERNAL: str = "internal"
-    PRIVATE: str = "private"
-
-    def __str__(self):
-        return self.value
-
-
-class Mutability(PyEnum):
-    PURE: str = "pure"
-    VIEW: str = "view"
-    NONE: str = ""
-
-    def __str__(self):
-        return self.value
-
-
-class Function:
-    id: str
-    description: str
-    declaration: str
-    visibility: Visibility
-    mutability: Mutability
-    signature: str
-    selector: str
-    selector_bytes: bytes
-
-    def __init__(
-        self,
-        id: str,
-        description: str,
-        declaration: str,
-        visibility: Visibility,
-        mutability: Mutability,
+  
         signature: str,
         selector: str,
         selector_bytes: bytes,
