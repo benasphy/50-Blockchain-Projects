@@ -1,30 +1,4 @@
-#!/usr/bin/env python3
 
-import argparse
-import copy
-import json
-import re
-import subprocess
-from enum import Enum as PyEnum
-from pathlib import Path
-from typing import Callable
-from urllib import request
-
-VoidFn = Callable[[], None]
-
-CHEATCODES_JSON_URL = "https://raw.githubusercontent.com/foundry-rs/foundry/master/crates/cheatcodes/assets/cheatcodes.json"
-OUT_PATH = "src/Vm.sol"
-
-VM_SAFE_DOC = """\
-/// The `VmSafe` interface does not allow manipulation of the EVM state or other actions that may
-/// result in Script simulations differing from on-chain execution. It is recommended to only use
-/// these cheats in scripts.
-"""
-
-VM_DOC = """\
-/// The `Vm` interface does allow manipulation of the EVM state. These are all intended to be used
-/// in tests, but it is not recommended to use these cheats in scripts.
-"""
 
 
 def main():
