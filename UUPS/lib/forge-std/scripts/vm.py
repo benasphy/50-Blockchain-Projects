@@ -1,46 +1,6 @@
 
 
-  
-        signature: str,
-        selector: str,
-        selector_bytes: bytes,
-    ):
-        self.id = id
-        self.description = description
-        self.declaration = declaration
-        self.visibility = visibility
-        self.mutability = mutability
-        self.signature = signature
-        self.selector = selector
-        self.selector_bytes = selector_bytes
-
-    @staticmethod
-    def from_dict(d: dict) -> "Function":
-        return Function(
-            d["id"],
-            d["description"],
-            d["declaration"],
-            Visibility(d["visibility"]),
-            Mutability(d["mutability"]),
-            d["signature"],
-            d["selector"],
-            bytes(d["selectorBytes"]),
-        )
-
-
-class Cheatcode:
-    func: Function
-    group: str
-    status: str
-    safety: str
-
-    def __init__(self, func: Function, group: str, status: str, safety: str):
-        self.func = func
-        self.group = group
-        self.status = status
-        self.safety = safety
-
-    @staticmethod
+ 
     def from_dict(d: dict) -> "Cheatcode":
         return Cheatcode(
             Function.from_dict(d["func"]),
