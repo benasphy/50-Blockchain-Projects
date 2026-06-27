@@ -1,31 +1,5 @@
 
 
- 
-    def from_dict(d: dict) -> "Cheatcode":
-        return Cheatcode(
-            Function.from_dict(d["func"]),
-            str(d["group"]),
-            str(d["status"]),
-            str(d["safety"]),
-        )
-
-
-class Error:
-    name: str
-    description: str
-    declaration: str
-
-    def __init__(self, name: str, description: str, declaration: str):
-        self.name = name
-        self.description = description
-        self.declaration = declaration
-
-    @staticmethod
-    def from_dict(d: dict) -> "Error":
-        return Error(**d)
-
-
-class Event:
     name: str
     description: str
     declaration: str
