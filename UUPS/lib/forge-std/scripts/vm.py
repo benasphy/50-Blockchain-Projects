@@ -1,39 +1,5 @@
 
-pCheatcode") -> bool:
-        return cmp_cheatcode(self.cheatcode, other.cheatcode) > 0
 
-
-def cmp_cheatcode(a: "Cheatcode", b: "Cheatcode") -> int:
-    if a.group != b.group:
-        return -1 if a.group < b.group else 1
-    if a.status != b.status:
-        return -1 if a.status < b.status else 1
-    if a.safety != b.safety:
-        return -1 if a.safety < b.safety else 1
-    if a.func.id != b.func.id:
-        return -1 if a.func.id < b.func.id else 1
-    return 0
-
-
-# HACK: A way to add group header comments without having to modify printer code
-def prefix_with_group_headers(cheats: list["Cheatcode"]):
-    s = set()
-    for i, cheat in enumerate(cheats):
-        if cheat.group in s:
-            continue
-
-        s.add(cheat.group)
-
-        c = copy.deepcopy(cheat)
-        c.func.description = ""
-        c.func.declaration = f"// ======== {group(c.group)} ========"
-        cheats.insert(i, c)
-    return cheats
-
-
-def group(s: str) -> str:
-    if s == "evm":
-        return "EVM"
     if s == "json":
         return "JSON"
     return s[0].upper() + s[1:]
