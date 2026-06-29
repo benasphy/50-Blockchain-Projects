@@ -1,45 +1,5 @@
 
 
-class Cheatcodes:
-    errors: list[Error]
-    events: list[Event]
-    enums: list[Enum]
-    structs: list[Struct]
-    cheatcodes: list[Cheatcode]
-
-    def __init__(
-        self,
-        errors: list[Error],
-        events: list[Event],
-        enums: list[Enum],
-        structs: list[Struct],
-        cheatcodes: list[Cheatcode],
-    ):
-        self.errors = errors
-        self.events = events
-        self.enums = enums
-        self.structs = structs
-        self.cheatcodes = cheatcodes
-
-    @staticmethod
-    def from_dict(d: dict) -> "Cheatcodes":
-        return Cheatcodes(
-            errors=[Error.from_dict(e) for e in d["errors"]],
-            events=[Event.from_dict(e) for e in d["events"]],
-            enums=[Enum.from_dict(e) for e in d["enums"]],
-            structs=[Struct.from_dict(e) for e in d["structs"]],
-            cheatcodes=[Cheatcode.from_dict(e) for e in d["cheatcodes"]],
-        )
-
-    @staticmethod
-    def from_json(s) -> "Cheatcodes":
-        return Cheatcodes.from_dict(json.loads(s))
-
-    @staticmethod
-    def from_json_file(file_path: str) -> "Cheatcodes":
-        with open(file_path, "r") as f:
-            return Cheatcodes.from_dict(json.load(f))
-
 
 class Item(PyEnum):
     ERROR: str = "error"
