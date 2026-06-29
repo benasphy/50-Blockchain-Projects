@@ -1,25 +1,3 @@
- = name
-        self.ty = ty
-        self.description = description
-
-
-class Struct:
-    name: str
-    description: str
-    fields: list[StructField]
-
-    def __init__(self, name: str, description: str, fields: list[StructField]):
-        self.name = name
-        self.description = description
-        self.fields = fields
-
-    @staticmethod
-    def from_dict(d: dict) -> "Struct":
-        return Struct(
-            d["name"],
-            d["description"],
-            list(map(lambda f: StructField(**f), d["fields"])),
-        )
 
 
 class Cheatcodes:
