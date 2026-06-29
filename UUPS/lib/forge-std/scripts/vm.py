@@ -1,28 +1,4 @@
-
-
-  
-
-    def __init__(self, name: str, description: str, variants: list[EnumVariant]):
-        self.name = name
-        self.description = description
-        self.variants = variants
-
-    @staticmethod
-    def from_dict(d: dict) -> "Enum":
-        return Enum(
-            d["name"],
-            d["description"],
-            list(map(lambda v: EnumVariant(**v), d["variants"])),
-        )
-
-
-class StructField:
-    name: str
-    ty: str
-    description: str
-
-    def __init__(self, name: str, ty: str, description: str):
-        self.name = name
+ = name
         self.ty = ty
         self.description = description
 
