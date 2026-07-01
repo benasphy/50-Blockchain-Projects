@@ -2,39 +2,7 @@
 
 
 
-    using stdStorage for StdStorage;
-
-    Storage test;
-
-    function setUp() public {
-        test = new Storage();
-    }
-
-    function testFindExists() public {
-        // Let's say we want to find the slot for the public
-        // variable `exists`. We just pass in the function selector
-        // to the `find` command
-        uint256 slot = stdstore.target(address(test)).sig("exists()").find();
-        assertEq(slot, 0);
-    }
-
-    function testWriteExists() public {
-        // Let's say we want to write to the slot for the public
-        // variable `exists`. We just pass in the function selector
-        // to the `checked_write` command
-        stdstore.target(address(test)).sig("exists()").checked_write(100);
-        assertEq(test.exists(), 100);
-    }
-
-    // It supports arbitrary storage layouts, like assembly-based storage locations
-    function testFindHidden() public {
-        // `hidden` is a random hash of bytes; iterating through slots would
-        // not find it. Our mechanism does
-        // Also, you can use the selector instead of a string
-        uint256 slot = stdstore.target(address(test)).sig(test.hidden.selector).find();
-        assertEq(slot, uint256(keccak256("my.random.var")));
-    }
-
+ 
     // If targeting a mapping, you have to pass in the keys necessary to perform the find
     // i.e.:
     function testFindMapping() public {
