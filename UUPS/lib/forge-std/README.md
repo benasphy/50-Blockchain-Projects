@@ -1,29 +1,7 @@
 
 
 
-### stdStorage
 
-This is a rather large contract due to all of the overloading to make the UX decent. Primarily, it is a wrapper around the `record` and `accesses` cheatcodes. It can _always_ find and write the storage slot(s) associated with a particular variable without knowing the storage layout. By default, writing to packed storage variables is not supported and will throw an error. However, you can enable packed slot support by calling `enable_packed_slots()` before using `find()` or `checked_write()`.
-
-This works by recording all `SLOAD`s and `SSTORE`s during a function call. If there is a single slot read or written to, it immediately returns the slot. Otherwise, behind the scenes, we iterate through and check each one (assuming the user passed in a `depth` parameter). If the variable is a struct, you can pass in a `depth` parameter which is basically the field depth.
-
-I.e.:
-
-```solidity
-struct T {
-    // depth 0
-    uint256 a;
-    // depth 1
-    uint256 b;
-}
-```
-
-#### Example usage
-
-```solidity
-import "forge-std/Test.sol";
-
-contract TestContract is Test {
     using stdStorage for StdStorage;
 
     Storage test;
