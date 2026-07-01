@@ -1,28 +1,5 @@
 
 
-```solidity
-
-import "forge-std/Test.sol";
-
-contract TestContract is Test {
-    ErrorsTest test;
-
-    function setUp() public {
-        test = new ErrorsTest();
-    }
-
-    function testExpectArithmetic() public {
-        vm.expectRevert(stdError.arithmeticError);
-        test.arithmeticError(10);
-    }
-}
-
-contract ErrorsTest {
-    function arithmeticError(uint256 a) public {
-        a = a - 100;
-    }
-}
-```
 
 ### stdStorage
 
